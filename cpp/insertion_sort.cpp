@@ -60,7 +60,7 @@ void ordenamientoInsercion(int numeros[], int n)
 int main()
 {
     int numeros[] = {7, 3, 8, 2, 6, 4, 5};
-    int n = 7;
+    int n = 1000;
 
     cout << "Arreglo original:" << endl;
     mostrarArreglo(numeros, n);
