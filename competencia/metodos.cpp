@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
-#include <random>
 #include <chrono>
 #include <algorithm>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -58,57 +59,57 @@ bool estaOrdenado(const vector<int>& arr) {
 }
 
 int main() {
-    const int N = 1000; 
+    // Ruta absoluta exacta
+    string nombreArchivo = "C:/Users/hecto/OneDrive/Desktop/Tercer Semestre/Estructura de datos/competencia/diez mil numeros (1).txt";
+    ifstream archivo(nombreArchivo);
+    vector<int> original;
+    int numero;
 
-    vector<int> original(N);
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dis(1, 10000);
-
-    for (int i = 0; i < N; ++i) {
-        original[i] = dis(gen);
+    if (!archivo.is_open()) {
+        cerr << "Error: No se pudo abrir el archivo en la ruta:" << endl;
+        cerr << nombreArchivo << endl;
+        return 1;
     }
 
-    
-    // Metodo de la burbuja
-    vector<int> copiaBurbuja = original; 
+    while (archivo >> numero) {
+        original.push_back(numero);
+    }
+    archivo.close();
 
+    cout << "--- EVALUANDO " << original.size() << " DATOS DEL ARCHIVO ---" << endl << endl;
+
+    // 1. Bubble Sort
+    vector<int> copiaBurbuja = original; 
     auto inicioBurbuja = chrono::high_resolution_clock::now();
     bubbleSort(copiaBurbuja);
     auto finBurbuja = chrono::high_resolution_clock::now();
-
     auto tiempoBurbuja = chrono::duration_cast<chrono::microseconds>(finBurbuja - inicioBurbuja);
 
     cout << "1. Bubble Sort:" << endl;
     cout << "   - Tiempo: " << tiempoBurbuja.count() << " microsegundos" << endl;
-    cout << "   - Estado: " << (estaOrdenado(copiaBurbuja) ? " CORRECTAMENTE ORDENADO" : " ERROR EN ORDENAMIENTO") << endl << endl;
+    cout << "   - Estado: " << (estaOrdenado(copiaBurbuja) ? "CORRECTAMENTE ORDENADO" : "ERROR EN ORDENAMIENTO") << endl << endl;
 
-    // Insertion Sort
+    // 2. Insertion Sort
     vector<int> copiaInsercion = original; 
-
     auto inicioInsercion = chrono::high_resolution_clock::now();
     insertionSort(copiaInsercion);
     auto finInsercion = chrono::high_resolution_clock::now();
-
     auto tiempoInsercion = chrono::duration_cast<chrono::microseconds>(finInsercion - inicioInsercion);
 
     cout << "2. Insertion Sort:" << endl;
     cout << "   - Tiempo: " << tiempoInsercion.count() << " microsegundos" << endl;
-    cout << "   - Estado: " << (estaOrdenado(copiaInsercion) ? " CORRECTAMENTE ORDENADO" : " ERROR EN ORDENAMIENTO") << endl << endl;
+    cout << "   - Estado: " << (estaOrdenado(copiaInsercion) ? "CORRECTAMENTE ORDENADO" : "ERROR EN ORDENAMIENTO") << endl << endl;
 
-    // Selección
+    // 3. Selection Sort
     vector<int> copiaSeleccion = original; 
-
     auto inicioSeleccion = chrono::high_resolution_clock::now();
     selectionSort(copiaSeleccion);
     auto finSeleccion = chrono::high_resolution_clock::now();
-
     auto tiempoSeleccion = chrono::duration_cast<chrono::microseconds>(finSeleccion - inicioSeleccion);
 
     cout << "3. Selection Sort:" << endl;
     cout << "   - Tiempo: " << tiempoSeleccion.count() << " microsegundos" << endl;
-    cout << "   - Estado: " << (estaOrdenado(copiaSeleccion) ? " CORRECTAMENTE ORDENADO" : " ERROR EN ORDENAMIENTO") << endl << endl;
-
+    cout << "   - Estado: " << (estaOrdenado(copiaSeleccion) ? "CORRECTAMENTE ORDENADO" : "ERROR EN ORDENAMIENTO") << endl << endl;
 
     return 0;
 }
